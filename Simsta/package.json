@@ -4,6 +4,7 @@
   "description": "Simsta - Social Media Simulation Game with Player Data Tracking",
   "main": "update-player-data.js",
   "scripts": {
+    "build": "node build.js",
     "sync-data": "node update-player-data.js"
   },
   "keywords": ["simsta", "social", "media", "game"],
