@@ -541,15 +541,22 @@ function updateGameState() {
     }
 
     // Auto-post
-    if (gameState.autoPostEnabled && now - gameState.lastAutoPostTime > gameState.autoPostInterval) {
-        gameState.lastAutoPostTime = now;
+    const nextAutoPostTime = Math.max(
+        (Number(gameState.lastAutoPostTime) || 0) + (Number(gameState.autoPostInterval) || 0),
+        (Number(gameState.lastPostTime) || 0) + (Number(gameState.postCooldown) || 0)
+    );
+    if (gameState.autoPostEnabled && now >= nextAutoPostTime) {
         const shouldPostVideo = Math.random() > 0.5;
+        let published = false;
         if (shouldPostVideo) {
-            generateAndPublishVideo();
+            published = generateAndPublishVideo({ autoPost: true });
         } else {
-            generateAndPublishPost();
+            published = generateAndPublishPost({ autoPost: true });
         }
-        addNotification('🤖 Auto-post published!', 'autopost');
+
+        if (published) {
+            gameState.lastAutoPostTime = now;
+        }
     }
 
     // Message generation

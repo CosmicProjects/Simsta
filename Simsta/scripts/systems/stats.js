@@ -168,4 +168,8 @@ function updateStatistics() {
             `).join('');
         }
     }
+
+    if (typeof updateAutoPostCountdown === 'function') {
+        updateAutoPostCountdown();
+    }
 }

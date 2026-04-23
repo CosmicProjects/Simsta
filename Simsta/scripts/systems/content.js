@@ -11,11 +11,16 @@ function getPlatformMultiplier() {
     return multiplier;
 }
 
-function generateAndPublishPost() {
+function generateAndPublishPost(options = {}) {
+    const isAutoPost = Boolean(options.autoPost);
     const now = Date.now();
     const timeSinceLastPost = now - gameState.lastPostTime;
 
     if (timeSinceLastPost < gameState.postCooldown) {
+        if (isAutoPost) {
+            return false;
+        }
+
         const secondsRemaining = Math.ceil((gameState.postCooldown - timeSinceLastPost) / 1000);
 
         // Play error sound
@@ -76,17 +81,29 @@ function generateAndPublishPost() {
     }
 
     const platformIcons = post.platforms.map(p => PLATFORMS[p]?.icon || '').join(' ');
-    addNotification(`🎲 Shared on ${platformIcons}: "${finalContent.substring(0, 30)}..."`, 'post');
+    addNotification(
+        `${isAutoPost ? '🤖 Auto-posted on' : '🎲 Shared on'} ${platformIcons}: "${finalContent.substring(0, 30)}..."`,
+        isAutoPost ? 'autopost' : 'post'
+    );
 
-    switchTab('feed');
-    switchFeedTab('posts');
+    if (!isAutoPost) {
+        switchTab('feed');
+        switchFeedTab('posts');
+    }
+
+    return true;
 }
 
-function generateAndPublishVideo() {
+function generateAndPublishVideo(options = {}) {
+    const isAutoPost = Boolean(options.autoPost);
     const now = Date.now();
     const timeSinceLastPost = now - gameState.lastPostTime;
 
     if (timeSinceLastPost < gameState.postCooldown) {
+        if (isAutoPost) {
+            return false;
+        }
+
         const secondsRemaining = Math.ceil((gameState.postCooldown - timeSinceLastPost) / 1000);
 
         // Play error sound
@@ -147,10 +164,17 @@ function generateAndPublishVideo() {
     }
 
     const platformIcons = video.platforms.map(p => PLATFORMS[p]?.icon || '').join(' ');
-    addNotification(`🎬 Video shared on ${platformIcons}: "${randomContent.substring(0, 30)}..."`, 'post');
+    addNotification(
+        `${isAutoPost ? '🤖 Auto-posted video on' : '🎬 Video shared on'} ${platformIcons}: "${randomContent.substring(0, 30)}..."`,
+        isAutoPost ? 'autopost' : 'post'
+    );
 
-    switchTab('feed');
-    switchFeedTab('videos');
+    if (!isAutoPost) {
+        switchTab('feed');
+        switchFeedTab('videos');
+    }
+
+    return true;
 }
 
 function postStory() {

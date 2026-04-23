@@ -19,6 +19,11 @@ function filterActivity(type) {
         activeBtn.classList.add('active');
     }
 
+    const autopostContainer = document.getElementById('autopostContainer');
+    if (autopostContainer) {
+        autopostContainer.style.display = type === 'autopost' ? 'block' : 'none';
+    }
+
     const notificationContainer = document.getElementById('notificationContainer');
 
     // Handle report filter separately

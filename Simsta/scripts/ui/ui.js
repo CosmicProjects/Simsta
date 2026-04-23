@@ -147,6 +147,10 @@ function renderUI() {
 
         // Check for new game announcements to display in banner
         if (typeof checkNewAnnouncements === 'function') checkNewAnnouncements();
+
+        if (typeof updateAutoPostCountdown === 'function') {
+            updateAutoPostCountdown();
+        }
     } catch (error) {
         console.error('Error in renderUI:', error);
     }
@@ -183,6 +187,23 @@ function updatePostButtonStates() {
             }
         }
     });
+}
+
+function formatTimerDuration(ms) {
+    const totalSeconds = Math.max(0, Math.ceil(ms / 1000));
+    const hours = Math.floor(totalSeconds / 3600);
+    const minutes = Math.floor((totalSeconds % 3600) / 60);
+    const seconds = totalSeconds % 60;
+
+    if (hours > 0) {
+        return `${hours}h ${String(minutes).padStart(2, '0')}m ${String(seconds).padStart(2, '0')}s`;
+    }
+
+    if (minutes > 0) {
+        return `${minutes}m ${String(seconds).padStart(2, '0')}s`;
+    }
+
+    return `${seconds}s`;
 }
 
 function switchFeedTab(type) {
@@ -330,6 +351,10 @@ function initializeAutoPostSlider() {
         slider.value = minutes;
         display.textContent = `${minutes} minute${minutes !== 1 ? 's' : ''}`;
     }
+
+    if (typeof updateAutoPostCountdown === 'function') {
+        updateAutoPostCountdown();
+    }
 }
 
 function initializeContentDeletionSlider() {
@@ -340,6 +365,58 @@ function initializeContentDeletionSlider() {
         slider.value = gameState.contentDeletionTime;
         display.textContent = `${gameState.contentDeletionTime} minute${gameState.contentDeletionTime !== 1 ? 's' : ''}`;
     }
+}
+
+function getNextAutoPostTimestamp() {
+    if (!gameState.autoPostEnabled) {
+        return null;
+    }
+
+    const lastAutoPostTime = Number(gameState.lastAutoPostTime) || 0;
+    const autoPostInterval = Number(gameState.autoPostInterval) || 0;
+    const lastPostTime = Number(gameState.lastPostTime) || 0;
+    const postCooldown = Number(gameState.postCooldown) || 0;
+
+    return Math.max(
+        lastAutoPostTime + autoPostInterval,
+        lastPostTime + postCooldown
+    );
+}
+
+function updateAutoPostCountdown() {
+    const activityDisplay = document.getElementById('autoPostCountdownDisplayActivity');
+    const settingsDisplay = document.getElementById('autoPostCountdownDisplaySettings');
+
+    if (!activityDisplay && !settingsDisplay) {
+        return;
+    }
+
+    const displays = [activityDisplay, settingsDisplay].filter(Boolean);
+    const nextAutoPostTime = getNextAutoPostTimestamp();
+    const now = Date.now();
+
+    let text = 'Paused';
+    let title = 'Auto-post is disabled';
+
+    if (gameState.autoPostEnabled) {
+        if (!nextAutoPostTime || nextAutoPostTime <= now) {
+            text = 'Ready now';
+            title = 'Auto-post can fire on the next loop tick';
+        } else {
+            const remainingMs = nextAutoPostTime - now;
+            text = `Next in ${formatTimerDuration(remainingMs)}`;
+            title = `Scheduled for ${new Date(nextAutoPostTime).toLocaleTimeString([], {
+                hour: '2-digit',
+                minute: '2-digit',
+                second: '2-digit',
+            })}`;
+        }
+    }
+
+    displays.forEach(display => {
+        display.textContent = text;
+        display.title = title;
+    });
 }
 
 function checkNewAnnouncements() {

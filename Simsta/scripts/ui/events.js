@@ -72,6 +72,9 @@ function setupEventListeners() {
         document.getElementById('autoPostToggleSettings').checked = e.target.checked;
         saveGame();
         addNotification(e.target.checked ? '🤖 Auto-post enabled' : '🤖 Auto-post disabled');
+        if (typeof updateAutoPostCountdown === 'function') {
+            updateAutoPostCountdown();
+        }
     });
 
     document.getElementById('autoPostToggleSettings').addEventListener('change', (e) => {
@@ -79,6 +82,9 @@ function setupEventListeners() {
         document.getElementById('autoPostToggle').checked = e.target.checked;
         saveGame();
         addNotification(e.target.checked ? '🤖 Auto-post enabled' : '🤖 Auto-post disabled');
+        if (typeof updateAutoPostCountdown === 'function') {
+            updateAutoPostCountdown();
+        }
     });
 
     // Auto-post interval slider
@@ -90,6 +96,9 @@ function setupEventListeners() {
             document.getElementById('autoPostIntervalDisplay').textContent = `${minutes} minute${minutes !== 1 ? 's' : ''}`;
             saveGame();
             addNotification(`⏱️ Auto-post interval set to ${minutes} minute${minutes !== 1 ? 's' : ''}`);
+            if (typeof updateAutoPostCountdown === 'function') {
+                updateAutoPostCountdown();
+            }
         });
     }
 
