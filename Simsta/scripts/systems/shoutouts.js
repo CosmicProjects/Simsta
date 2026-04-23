@@ -32,7 +32,13 @@ function giveProfileShoutout(targetUserId) {
 
     const targetUser = users[targetUserId];
     const sourceUser = users[currentUserId];
-    const gain = calculateProfileShoutoutGain(sourceUser.followers);
+    const growthMultiplier = typeof getGlobalGrowthMultiplier === 'function'
+        ? getGlobalGrowthMultiplier()
+        : (Number(gameState.ownerMultiplier) || 1);
+    const gain = Math.max(
+        PROFILE_SHOUTOUT_BASE_GAIN,
+        Math.round(calculateProfileShoutoutGain(sourceUser.followers) * growthMultiplier)
+    );
     const sourceName = sourceUser.username || 'Player';
     const targetName = targetUser.username || 'Player';
     const remainingMs = getProfileShoutoutCooldownRemainingMs(gameState);

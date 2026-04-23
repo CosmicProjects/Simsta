@@ -1905,6 +1905,8 @@
       <div class="modal-popup" style="max-width: 500px">
         <button
           id="closeReportMeaningsBtn"
+          type="button"
+          onclick="closeReportMeanings(); event.stopPropagation();"
           style="
             position: absolute;
             top: 16px;
@@ -1913,6 +1915,7 @@
             border: none;
             font-size: 24px;
             cursor: pointer;
+            z-index: 3;
           "
         >
           ✕

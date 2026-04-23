@@ -8,7 +8,7 @@ const gameState = {
   totalViews: 0,
   totalComments: 0,
   notifications: [],
-  ownerMultiplier: 1,
+  ownerMultiplier: 1, // Global growth multiplier shared across all profiles
   posts: [],
   stories: [],
   currentViewedStoryId: null,
@@ -100,6 +100,26 @@ const gameState = {
   selectedPlatforms: ['simsta'],
   crossPostingUnlocked: true, // Let's keep it true for now so user can see it
 };
+
+const GLOBAL_GROWTH_MULTIPLIER_KEY = "simstaGlobalGrowthMultiplier";
+
+function normalizeGrowthMultiplier(value) {
+  const numericValue = Number(value);
+  return Number.isFinite(numericValue) && numericValue > 0 ? numericValue : 1;
+}
+
+function getGlobalGrowthMultiplier() {
+  try {
+    const storedMultiplier = localStorage.getItem(GLOBAL_GROWTH_MULTIPLIER_KEY);
+    if (storedMultiplier !== null) {
+      return normalizeGrowthMultiplier(storedMultiplier);
+    }
+  } catch (error) {
+    // Fall back to the in-memory value if storage is unavailable.
+  }
+
+  return normalizeGrowthMultiplier(gameState.ownerMultiplier);
+}
 
 // Game Constants - Real-time growth rates (per second)
 const GROWTH_RATES = {

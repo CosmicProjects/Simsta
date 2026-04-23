@@ -274,6 +274,9 @@ function startLiveUpdates() {
         const elapsedMs = now - lastLiveUpdateTime;
         const elapsedSeconds = Math.max(1, Math.floor(elapsedMs / 1000));
         lastLiveUpdateTime = now;
+        const growthMultiplier = typeof getGlobalGrowthMultiplier === 'function'
+            ? getGlobalGrowthMultiplier()
+            : (Number(gameState.ownerMultiplier) || 1);
 
         // Update duration
         const duration = Math.floor((Date.now() - liveStartTime) / 1000);
@@ -310,16 +313,16 @@ function startLiveUpdates() {
             // Randomly gain engagement (based on viewer count) - ONLY track locally, don't add to stats yet
             if (liveViewers > 0) {
                 if (Math.random() < 0.2) {
-                    const likesGained = Math.floor(Math.random() * 5) + 1;
+                    const likesGained = Math.max(1, Math.round(((Math.floor(Math.random() * 5) + 1) * growthMultiplier)));
                     liveLikes += likesGained;
                     // Don't add to gameState yet - wait until stream ends
                 }
                 if (Math.random() < 0.15) {
-                    liveComments += 1;
+                    liveComments += Math.max(1, Math.round(1 * growthMultiplier));
                     // Don't add to gameState yet - wait until stream ends
                 }
                 if (Math.random() < 0.1) {
-                    liveFollowers += 1;
+                    liveFollowers += Math.max(1, Math.round(1 * growthMultiplier));
                     // Don't add to gameState yet - wait until stream ends
                 }
             }

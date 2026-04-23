@@ -105,7 +105,10 @@ function closePlayerProfile() {
 
 function addFollower(username) {
     const followersBefore = Number(gameState.followers) || 0;
-    const gainedFollowers = Math.floor(Math.random() * 10) + 1;
+    const growthMultiplier = typeof getGlobalGrowthMultiplier === 'function'
+        ? getGlobalGrowthMultiplier()
+        : (Number(gameState.ownerMultiplier) || 1);
+    const gainedFollowers = Math.max(1, Math.floor(((Math.floor(Math.random() * 10) + 1) * growthMultiplier)));
     const followersAfter = Math.min(GROWTH_RATES.maxFollowers, followersBefore + gainedFollowers);
     const appliedFollowerGain = Math.max(0, followersAfter - followersBefore);
 

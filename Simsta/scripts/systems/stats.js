@@ -19,28 +19,32 @@ function updateGrowthRates() {
         messageRate: 50,
     };
 
+    const growthMultiplier = typeof getGlobalGrowthMultiplier === 'function'
+        ? getGlobalGrowthMultiplier()
+        : (Number(gameState.ownerMultiplier) || 1);
+
     const followerRate = parseFloat(Math.min(
-        GROWTH_RATES.baseFollowerGrowth + gameState.followers * GROWTH_RATES.followerMultiplier,
+        (GROWTH_RATES.baseFollowerGrowth + gameState.followers * GROWTH_RATES.followerMultiplier) * growthMultiplier,
         GROWTH_CAPS.followerRate
     ).toFixed(2));
     const likeRate = parseFloat(Math.min(
-        GROWTH_RATES.baseLikeGrowth + gameState.followers * GROWTH_RATES.likeMultiplier,
+        (GROWTH_RATES.baseLikeGrowth + gameState.followers * GROWTH_RATES.likeMultiplier) * growthMultiplier,
         GROWTH_CAPS.likeRate
     ).toFixed(2));
     const commentRate = parseFloat(Math.min(
-        GROWTH_RATES.baseCommentGrowth + gameState.followers * GROWTH_RATES.commentMultiplier,
+        (GROWTH_RATES.baseCommentGrowth + gameState.followers * GROWTH_RATES.commentMultiplier) * growthMultiplier,
         GROWTH_CAPS.commentRate
     ).toFixed(2));
     const shareRate = parseFloat(Math.min(
-        GROWTH_RATES.baseShareGrowth + gameState.followers * GROWTH_RATES.shareMultiplier,
+        (GROWTH_RATES.baseShareGrowth + gameState.followers * GROWTH_RATES.shareMultiplier) * growthMultiplier,
         GROWTH_CAPS.shareRate
     ).toFixed(2));
     const viewRate = parseFloat(Math.min(
-        GROWTH_RATES.baseViewGrowth + gameState.followers * GROWTH_RATES.viewMultiplier,
+        (GROWTH_RATES.baseViewGrowth + gameState.followers * GROWTH_RATES.viewMultiplier) * growthMultiplier,
         GROWTH_CAPS.viewRate
     ).toFixed(2));
     const messageRate = parseFloat(Math.min(
-        GROWTH_RATES.baseMessageGrowth + gameState.followers * GROWTH_RATES.messageMultiplier,
+        (GROWTH_RATES.baseMessageGrowth + gameState.followers * GROWTH_RATES.messageMultiplier) * growthMultiplier,
         GROWTH_CAPS.messageRate
     ).toFixed(2));
 

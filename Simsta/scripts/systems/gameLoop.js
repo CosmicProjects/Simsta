@@ -560,7 +560,10 @@ function updateGameState() {
     }
 
     // Message generation
-    const messageChance = (GROWTH_RATES.baseMessageChance + gameState.followers * GROWTH_RATES.messageChanceMultiplier) * elapsedSeconds;
+    const growthMultiplier = typeof getGlobalGrowthMultiplier === 'function'
+        ? getGlobalGrowthMultiplier()
+        : (Number(gameState.ownerMultiplier) || 1);
+    const messageChance = (GROWTH_RATES.baseMessageChance + gameState.followers * GROWTH_RATES.messageChanceMultiplier) * elapsedSeconds * growthMultiplier;
     if (Math.random() < messageChance) {
         const username = generateRandomUsername();
         const message = MESSAGE_TEMPLATES[Math.floor(Math.random() * MESSAGE_TEMPLATES.length)];

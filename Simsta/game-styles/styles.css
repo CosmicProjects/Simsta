@@ -3435,6 +3435,26 @@ body {
   padding: 32px !important;
 }
 
+/* Report Meanings Modal */
+#reportMeaningsModal {
+  z-index: 20000 !important;
+}
+
+#reportMeaningsModal .modal-popup {
+  overflow: hidden;
+}
+
+#reportMeaningsContent {
+  max-height: min(400px, calc(90vh - 160px)) !important;
+  overflow-y: auto !important;
+  padding-right: 8px;
+}
+
+#closeReportMeaningsBtn {
+  z-index: 5 !important;
+  pointer-events: auto;
+}
+
 .confirmation-header {
   display: flex;
   align-items: flex-start;

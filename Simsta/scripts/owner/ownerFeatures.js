@@ -210,9 +210,30 @@ function unlockOwnerReward(rewardId) {
 // Global multipliers
 function setGlobalMultiplier(multiplier) {
     if (!isOwner()) return;
-    
-    gameState.ownerMultiplier = multiplier;
-    addNotification(`⚡ Global Multiplier set to ${multiplier}x!`, 'info');
+
+    const safeMultiplier = typeof normalizeGrowthMultiplier === 'function'
+        ? normalizeGrowthMultiplier(multiplier)
+        : Math.max(1, Number(multiplier) || 1);
+
+    try {
+        localStorage.setItem(GLOBAL_GROWTH_MULTIPLIER_KEY, String(safeMultiplier));
+    } catch (error) {
+        console.error('Error saving global multiplier:', error);
+    }
+
+    gameState.ownerMultiplier = safeMultiplier;
+
+    if (typeof users !== 'undefined' && users) {
+        Object.keys(users).forEach(userId => {
+            if (!users[userId]) return;
+            users[userId] = typeof normalizeUserRecord === 'function'
+                ? normalizeUserRecord(users[userId], userId)
+                : users[userId];
+            users[userId].ownerMultiplier = safeMultiplier;
+        });
+    }
+
+    addNotification(`⚡ Global Multiplier set to ${safeMultiplier}x for all users!`, 'info');
     saveGame();
     if (typeof renderGrowthControls === 'function') renderGrowthControls();
     else if (typeof renderAdminTools === 'function') renderAdminTools();

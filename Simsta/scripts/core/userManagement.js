@@ -82,6 +82,7 @@ function createBaseUserRecord(overrides = {}) {
         gameAnnouncements: [],
         seenAnnouncements: [],
         ownerRewards: [],
+        ownerMultiplier: typeof getGlobalGrowthMultiplier === 'function' ? getGlobalGrowthMultiplier() : 1,
         ...overrides,
     };
 }
@@ -160,6 +161,9 @@ function normalizeUserRecord(userData, fallbackId = 'default') {
     base.gameAnnouncements = Array.isArray(base.gameAnnouncements) ? base.gameAnnouncements : [];
     base.seenAnnouncements = Array.isArray(base.seenAnnouncements) ? base.seenAnnouncements : [];
     base.ownerRewards = Array.isArray(base.ownerRewards) ? base.ownerRewards : [];
+    base.ownerMultiplier = typeof getGlobalGrowthMultiplier === 'function'
+        ? getGlobalGrowthMultiplier()
+        : Number(base.ownerMultiplier) || 1;
 
     return base;
 }
@@ -222,6 +226,10 @@ function initializeUserManagement() {
         if (!gameState.lastAutoPostTime) {
             gameState.lastAutoPostTime = Date.now();
         }
+
+        gameState.ownerMultiplier = typeof getGlobalGrowthMultiplier === 'function'
+            ? getGlobalGrowthMultiplier()
+            : Number(gameState.ownerMultiplier) || 1;
     } catch (error) {
         console.error('ERROR in initializeUserManagement:', error);
     }
@@ -329,6 +337,14 @@ function loadUser(userId) {
     gameState.userTheme = gameState.userTheme || 'default';
     gameState.seenAnnouncements = gameState.seenAnnouncements || [];
     gameState.ownerTheme = gameState.ownerTheme || 'default';
+    const globalGrowthMultiplier = typeof getGlobalGrowthMultiplier === 'function'
+        ? getGlobalGrowthMultiplier()
+        : 1;
+    if (Number(gameState.ownerMultiplier) !== globalGrowthMultiplier) {
+        gameState.ownerMultiplier = globalGrowthMultiplier;
+        userData.ownerMultiplier = globalGrowthMultiplier;
+        needsSave = true;
+    }
     if (typeof gameState.darkModeEnabled !== 'boolean') {
         gameState.darkModeEnabled = false;
     }
@@ -661,6 +677,19 @@ window.addEventListener('storage', (event) => {
             }
         } catch (e) {
             console.error('Error syncing users:', e);
+        }
+    }
+
+    if (event.key === GLOBAL_GROWTH_MULTIPLIER_KEY) {
+        const multiplier = typeof getGlobalGrowthMultiplier === 'function'
+            ? getGlobalGrowthMultiplier()
+            : Number(event.newValue) || 1;
+        gameState.ownerMultiplier = multiplier;
+        if (users && currentUserId && users[currentUserId]) {
+            users[currentUserId].ownerMultiplier = multiplier;
+        }
+        if (typeof renderGrowthControls === 'function') {
+            renderGrowthControls();
         }
     }
 
