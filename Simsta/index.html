@@ -1,0 +1,2208 @@
+﻿<!doctype html>
+<html lang="en">
+  <head>
+    <!-- Meta Tags -->
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <!-- Title -->
+    <title>Simsta - Social Media Simulation Game</title>
+
+    <!-- Styles -->
+    <link rel="stylesheet" href="game-styles/styles.css" />
+
+    <!-- Tab Logo -->
+    <link rel="icon" type="image/x-icon" href="tab-logo/favicon.ico" />
+  </head>
+
+  <body>
+    <div class="app-container">
+      <!-- Header -->
+      <header class="app-header">
+        <div class="header-content">
+          <h1 class="app-title">
+            <span class="title-letter" style="--delay: 0s">S</span>
+            <span class="title-letter" style="--delay: 0.1s">i</span>
+            <span class="title-letter" style="--delay: 0.2s">m</span>
+            <span class="title-letter" style="--delay: 0.3s">s</span>
+            <span class="title-letter" style="--delay: 0.4s">t</span>
+            <span class="title-letter" style="--delay: 0.5s">a</span>
+          </h1>
+          <div class="header-stats">
+            <div class="header-stat">
+              <span class="stat-icon">👥</span>
+              <span id="headerFollowers">0</span>
+            </div>
+            <div class="header-stat">
+              <span class="stat-icon">❤️</span>
+              <span id="headerLikes">0</span>
+            </div>
+            <div class="header-stat">
+              <span class="stat-icon">👁️</span>
+              <span id="headerViews">0</span>
+            </div>
+          </div>
+          <div class="header-buttons">
+            <button
+              class="changelog-history-btn"
+              onclick="showHowToPlay()"
+              title="Learn how to play"
+            >
+              ❓ How to Play
+            </button>
+            <button
+              class="changelog-history-btn"
+              onclick="showChangelogHistory()"
+              title="View all updates"
+            >
+              📜 History
+            </button>
+          </div>
+        </div>
+      </header>
+
+      <!-- Tab Navigation -->
+      <nav class="tab-navigation">
+        <button class="tab-btn active" data-tab="profile">
+          <span class="tab-icon">👤</span>
+          <span class="tab-label">Profile</span>
+        </button>
+        <button class="tab-btn" data-tab="create">
+          <span class="tab-icon">✍️</span>
+          <span class="tab-label">Create</span>
+        </button>
+        <button class="tab-btn" data-tab="live">
+          <span class="tab-icon">🔴</span>
+          <span class="tab-label">Live</span>
+        </button>
+        <button class="tab-btn" data-tab="feed">
+          <span class="tab-icon">📰</span>
+          <span class="tab-label">Feed</span>
+        </button>
+        <button class="tab-btn" data-tab="explore">
+          <span class="tab-icon">🔍</span>
+          <span class="tab-label">Explore</span>
+        </button>
+        <button class="tab-btn" data-tab="activity">
+          <span class="tab-icon">🔔</span>
+          <span class="tab-label">Activity</span>
+        </button>
+        <button class="tab-btn" data-tab="messages">
+          <span class="tab-icon">💬</span>
+          <span class="tab-label">Messages</span>
+        </button>
+        <button class="tab-btn" data-tab="statistics">
+          <span class="tab-icon">📊</span>
+          <span class="tab-label">Statistics</span>
+        </button>
+        <button class="tab-btn" data-tab="leaderboards">
+          <span class="tab-icon">🏆</span>
+          <span class="tab-label">Leaderboards</span>
+        </button>
+        <button class="tab-btn" data-tab="reports">
+          <span class="tab-icon">🚨</span>
+          <span class="tab-label">Reports</span>
+        </button>
+        <button class="tab-btn" data-tab="settings">
+          <span class="tab-icon">⚙️</span>
+          <span class="tab-label">Settings</span>
+        </button>
+        <button
+          class="tab-btn"
+          id="boostsTabBtn"
+          data-tab="boosts"
+          style="display: none"
+        >
+          <span class="tab-icon">⚡</span>
+          <span class="tab-label">Boosts</span>
+        </button>
+        <button
+          class="tab-btn"
+          id="ownerTabBtn"
+          data-tab="owner"
+          style="display: none"
+        >
+          <span class="tab-icon">👑</span>
+          <span class="tab-label">Owner</span>
+        </button>
+      </nav>
+
+      <!-- Announcement Banner -->
+      <div
+        id="announcementBanner"
+        class="announcement-banner"
+        style="display: none"
+      ></div>
+
+      <!-- Main Content -->
+      <main class="main-content">
+        <!-- Profile Tab -->
+        <div class="tab-content active" id="profile-tab">
+          <div class="profile-section">
+            <div class="profile-header">
+              <div
+                class="avatar-large"
+                id="profilePictureBtn"
+                title="Click to post a story"
+              >
+                👤
+              </div>
+              <div class="profile-info">
+                <div class="username-row">
+                  <h2 id="username" class="username-text">Player</h2>
+                  <span
+                    id="verifiedBadge"
+                    class="verified-badge"
+                    style="display: none"
+                    >✓</span
+                  >
+                  <span
+                    id="adminBadge"
+                    class="admin-badge"
+                    style="display: none"
+                    >👑 Admin</span
+                  >
+                  <button id="editUsernameBtn" class="edit-btn">✏️ Edit</button>
+                </div>
+                <p class="profile-subtitle">
+                  @<span id="usernameHandle">player</span>
+                </p>
+                <div
+                  id="profileBadgeDisplay"
+                  style="
+                    margin-top: 8px;
+                    font-size: 12px;
+                    padding: 4px 8px;
+                    background: rgba(255, 215, 0, 0.1);
+                    border-radius: 6px;
+                    display: inline-block;
+                    border: 1px solid rgba(255, 215, 0, 0.3);
+                    color: #ffd700;
+                  "
+                ></div>
+              </div>
+            </div>
+
+            <div class="stats-grid">
+              <div class="stat-card">
+                <div class="stat-value" id="followerCount">0</div>
+                <div class="stat-label">Followers</div>
+              </div>
+              <div class="stat-card">
+                <div class="stat-value" id="postCount">0</div>
+                <div class="stat-label">Posts</div>
+              </div>
+              <div class="stat-card">
+                <div class="stat-value" id="totalLikes">0</div>
+                <div class="stat-label">Total Likes</div>
+              </div>
+              <div class="stat-card">
+                <div class="stat-value" id="totalViews">0</div>
+                <div class="stat-label">Total Views</div>
+              </div>
+            </div>
+
+            <div class="growth-section">
+              <h3>Growth Rate</h3>
+              <div class="growth-stats">
+                <div class="growth-item">
+                  <span class="growth-icon">📈</span>
+                  <div class="growth-text">
+                    <span class="growth-label">Followers/sec</span>
+                    <span class="growth-value" id="followerRate">0</span>
+                  </div>
+                </div>
+                <div class="growth-item">
+                  <span class="growth-icon">❤️</span>
+                  <div class="growth-text">
+                    <span class="growth-label">Likes/sec</span>
+                    <span class="growth-value" id="likeRate">0</span>
+                  </div>
+                </div>
+                <div class="growth-item">
+                  <span class="growth-icon">💬</span>
+                  <div class="growth-text">
+                    <span class="growth-label">Comments/sec</span>
+                    <span class="growth-value" id="commentRate">0</span>
+                  </div>
+                </div>
+                <div class="growth-item">
+                  <span class="growth-icon">🔄</span>
+                  <div class="growth-text">
+                    <span class="growth-label">Shares/sec</span>
+                    <span class="growth-value" id="shareRate">0</span>
+                  </div>
+                </div>
+                <div class="growth-item">
+                  <span class="growth-icon">📹</span>
+                  <div class="growth-text">
+                    <span class="growth-label">Video Views/sec</span>
+                    <span class="growth-value" id="viewRate">0</span>
+                  </div>
+                </div>
+                <div class="growth-item">
+                  <span class="growth-icon">💌</span>
+                  <div class="growth-text">
+                    <span class="growth-label">Messages/sec</span>
+                    <span class="growth-value" id="messageRate">0</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- User Management Section -->
+            <div class="user-management-section">
+              <h3>👥 User Profiles</h3>
+              <p class="section-subtitle">
+                Switch between different user profiles
+              </p>
+              <div id="userProfilesList" class="user-profiles-list">
+                <!-- User profiles will be populated here -->
+              </div>
+              <button id="addUserBtn" class="add-user-btn">
+                ➕ Add New User
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Create Tab -->
+        <div class="tab-content" id="create-tab">
+          <div class="creator-studio">
+            <!-- Hero Header (Ultra-Compact) -->
+            <div class="studio-hero">
+              <div class="hero-content">
+                <span class="studio-tag">Creator Studio</span>
+                <h2 class="hero-title">Ready to Influence?</h2>
+              </div>
+            </div>
+
+            <!-- Creation Zones (Ultra-Compact) -->
+            <div class="creation-zones">
+              <!-- Post Zone -->
+              <div class="creation-zone post-zone" id="GeneratePost">
+                <div class="zone-visual">
+                  <span class="zone-icon">✍️</span>
+                  <div class="zone-glow"></div>
+                </div>
+                <div class="zone-info">
+                  <h3>The Feed</h3>
+                  <div class="zone-footer">
+                    <span class="zone-action-text">Post to Feed</span>
+                    <span class="action-arrow">→</span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Video Zone -->
+              <div class="creation-zone video-zone" id="GenerateVideo">
+                <div class="zone-visual">
+                  <span class="zone-icon">🎬</span>
+                  <div class="zone-glow"></div>
+                </div>
+                <div class="zone-info">
+                  <h3>Shorts & Viral</h3>
+                  <div class="zone-footer">
+                    <span class="zone-action-text">Record Video</span>
+                    <span class="action-arrow">→</span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Duet Zone -->
+              <div class="creation-zone duet-zone" id="GenerateDuet">
+                <div class="zone-visual">
+                  <span class="zone-icon">🎭</span>
+                  <div class="zone-glow"></div>
+                </div>
+                <div class="zone-info">
+                  <h3>Collaboration</h3>
+                  <div class="zone-footer">
+                    <span class="zone-action-text">Start Duet</span>
+                    <span class="action-arrow">→</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Multi-Platform Expansion (Cross-Post) -->
+            <div class="studio-platforms" id="platformModule">
+              <div class="hashtag-module-header">
+                <div class="header-left">
+                  <span class="module-icon">🌐</span>
+                  <h3>Platform Expansion</h3>
+                </div>
+                <div class="platforms-count">
+                  <span id="platformCountDisplay">1 Platform</span>
+                </div>
+              </div>
+              <div class="platform-selector-grid">
+                <div
+                  class="platform-card active"
+                  data-platform="simsta"
+                  title="Post to Simsta"
+                >
+                  <div class="platform-check">✓</div>
+                  <span class="platform-icon">📸</span>
+                  <span class="platform-name">Simsta</span>
+                  <div class="platform-bonus">Base</div>
+                </div>
+                <div
+                  class="platform-card"
+                  data-platform="simtok"
+                  title="Cross-post to SimTok"
+                >
+                  <div class="platform-check">✓</div>
+                  <span class="platform-icon">🎵</span>
+                  <span class="platform-name">SimTok</span>
+                  <div class="platform-bonus">+25%</div>
+                </div>
+                <div
+                  class="platform-card"
+                  data-platform="simx"
+                  title="Cross-post to SimX"
+                >
+                  <div class="platform-check">✓</div>
+                  <span class="platform-icon">🐦</span>
+                  <span class="platform-name">SimX</span>
+                  <div class="platform-bonus">+15%</div>
+                </div>
+                <div
+                  class="platform-card"
+                  data-platform="simthreads"
+                  title="Cross-post to SimThreads"
+                >
+                  <div class="platform-check">✓</div>
+                  <span class="platform-icon">🧵</span>
+                  <span class="platform-name">SimThreads</span>
+                  <div class="platform-bonus">+10%</div>
+                </div>
+              </div>
+              <p class="platform-hint">
+                ✨ Cross-posting increases reach and engagement!
+              </p>
+            </div>
+
+            <!-- Enhanced Hashtag Module (Ultra-Compact) -->
+            <div class="studio-hashtags">
+              <div class="hashtag-module-header">
+                <div class="header-left">
+                  <span class="module-icon">🏷️</span>
+                  <h3>Content Strategy</h3>
+                </div>
+                <div class="trending-indicator">
+                  <span class="indicator-dot"></span>
+                  <span class="indicator-text">Live Optimization</span>
+                </div>
+              </div>
+              <div class="hashtag-pro-input">
+                <span class="pro-symbol">#</span>
+                <input
+                  type="text"
+                  id="hashtagInput"
+                  class="hashtag-field-pro"
+                  placeholder="Add tags to boost reach..."
+                />
+                <button id="generateHashtagsBtn" title="Generate AI Hashtags">
+                  🪄
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Live Tab -->
+        <div class="tab-content" id="live-tab">
+          <div class="live-section">
+            <h2>🔴 Go Live</h2>
+
+            <!-- Not Live State -->
+            <div id="notLiveContainer" class="live-container">
+              <div class="go-live-card">
+                <div class="go-live-content">
+                  <div class="go-live-icon">📹</div>
+                  <h3 class="go-live-title">Ready to Go Live?</h3>
+                  <p class="go-live-subtitle">
+                    Connect with your audience in real-time and watch your
+                    engagement soar!
+                  </p>
+
+                  <div class="go-live-benefits">
+                    <div class="benefit-item">
+                      <span class="benefit-icon">👥</span>
+                      <div class="benefit-text">
+                        <div class="benefit-title">Gain Followers</div>
+                        <div class="benefit-desc">
+                          30% of viewers become followers
+                        </div>
+                      </div>
+                    </div>
+                    <div class="benefit-item">
+                      <span class="benefit-icon">💬</span>
+                      <div class="benefit-text">
+                        <div class="benefit-title">Live Engagement</div>
+                        <div class="benefit-desc">
+                          Real-time comments &amp; interaction
+                        </div>
+                      </div>
+                    </div>
+                    <div class="benefit-item">
+                      <span class="benefit-icon">❤️</span>
+                      <div class="benefit-text">
+                        <div class="benefit-title">Get Likes</div>
+                        <div class="benefit-desc">
+                          Average 2 likes per viewer
+                        </div>
+                      </div>
+                    </div>
+                    <div class="benefit-item">
+                      <span class="benefit-icon">🚀</span>
+                      <div class="benefit-text">
+                        <div class="benefit-title">Boost Visibility</div>
+                        <div class="benefit-desc">
+                          Increase your reach instantly
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <button id="goLiveBtn" class="go-live-btn">
+                    🔴 Go Live Now
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <!-- Live State -->
+            <div
+              id="liveContainer"
+              class="live-container"
+              style="display: none"
+            >
+              <div class="live-broadcast-card">
+                <div class="live-broadcast-header">
+                  <div class="live-indicator">
+                    <span class="live-dot"></span>
+                    <span class="live-text">LIVE</span>
+                    <div class="live-waveform">
+                      <span class="wave-bar"></span>
+                      <span class="wave-bar"></span>
+                      <span class="wave-bar"></span>
+                      <span class="wave-bar"></span>
+                      <span class="wave-bar"></span>
+                    </div>
+                  </div>
+                  <div class="live-stats">
+                    <div class="live-stat">
+                      <span class="stat-label">👁️ VIEWERS</span>
+                      <span class="stat-value" id="liveViewers">0</span>
+                    </div>
+                    <div class="live-stat">
+                      <span class="stat-label">❤️ LIKES</span>
+                      <span class="stat-value" id="liveLikes">0</span>
+                    </div>
+                    <div class="live-stat">
+                      <span class="stat-label">👥 FOLLOWERS</span>
+                      <span class="stat-value" id="liveFollowers">0</span>
+                    </div>
+                    <div class="live-stat">
+                      <span class="stat-label">💬 COMMENTS</span>
+                      <span class="stat-value" id="liveComments">0</span>
+                    </div>
+                    <div class="live-stat duration-stat">
+                      <span class="stat-label">⏱️ DURATION</span>
+                      <span class="stat-value" id="liveDuration">0:00</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="live-stream-card">
+                <div class="live-viewfinder">
+                  <span class="viewfinder-corner top-left"></span>
+                  <span class="viewfinder-corner top-right"></span>
+                  <span class="viewfinder-corner bottom-left"></span>
+                  <span class="viewfinder-corner bottom-right"></span>
+                </div>
+                <div class="live-video-placeholder">
+                  <span
+                    style="
+                      font-size: 52px;
+                      filter: drop-shadow(0 4px 16px rgba(52, 152, 219, 0.35));
+                    "
+                    >📹</span
+                  >
+                  <p>Your Live Stream</p>
+                </div>
+                <div class="live-stream-particles">
+                  <span class="stream-particle"></span>
+                  <span class="stream-particle"></span>
+                  <span class="stream-particle"></span>
+                  <span class="stream-particle"></span>
+                  <span class="stream-particle"></span>
+                  <span class="stream-particle"></span>
+                </div>
+              </div>
+
+              <div class="live-action-row">
+                <button id="toggleChatBtn" class="toggle-chat-btn-main">
+                  💬 Open Chat
+                </button>
+                <button id="endLiveBtn" class="end-live-btn">
+                  ⏹️ End Live Stream
+                </button>
+              </div>
+            </div>
+
+            <!-- Stream Ended State -->
+            <div
+              id="streamEndedContainer"
+              class="live-container"
+              style="display: none"
+            >
+              <div class="stream-ended-card">
+                <div class="stream-ended-icon">🎉</div>
+                <h2 class="stream-ended-title">Stream Ended!</h2>
+                <p class="stream-ended-subtitle">Here's what you earned:</p>
+
+                <div class="stream-ended-stats">
+                  <div class="stream-ended-stat-row">
+                    <div class="stream-ended-stat-item">
+                      <div class="stat-label">Duration</div>
+                      <div class="stat-value" id="streamDurationDisplay">
+                        0:00
+                      </div>
+                    </div>
+                    <div class="stream-ended-stat-item">
+                      <div class="stat-label">Viewers</div>
+                      <div class="stat-value" id="streamViewersDisplay">0</div>
+                    </div>
+                  </div>
+
+                  <div class="stream-ended-stat-row">
+                    <div class="stream-ended-stat-item followers">
+                      <div class="stat-icon">👥</div>
+                      <div class="stat-label">Followers</div>
+                      <div class="stat-value" id="earnedFollowersDisplay">
+                        0
+                      </div>
+                    </div>
+                    <div class="stream-ended-stat-item likes">
+                      <div class="stat-icon">❤️</div>
+                      <div class="stat-label">Likes</div>
+                      <div class="stat-value" id="earnedLikesDisplay">0</div>
+                    </div>
+                    <div class="stream-ended-stat-item comments">
+                      <div class="stat-icon">💬</div>
+                      <div class="stat-label">Comments</div>
+                      <div class="stat-value" id="earnedCommentsDisplay">0</div>
+                    </div>
+                  </div>
+                </div>
+
+                <div
+                  style="
+                    display: flex;
+                    gap: 12px;
+                    justify-content: center;
+                    width: 100%;
+                    flex-wrap: wrap;
+                  "
+                >
+                  <button
+                    id="streamEndedResumeBtn"
+                    class="stream-ended-resume-btn"
+                  >
+                    ▶️ Resume Stream
+                  </button>
+                  <button
+                    id="streamEndedContinueBtn"
+                    class="stream-ended-continue-btn"
+                  >
+                    Continue
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Feed Tab -->
+        <div class="tab-content" id="feed-tab">
+          <div class="feed-section">
+            <h2>Your Feed</h2>
+
+            <!-- Feed Sub-tabs and Sort -->
+            <div class="feed-header">
+              <div class="feed-subtabs">
+                <button class="feed-subtab-btn active" data-feed-type="posts">
+                  Posts
+                </button>
+                <button class="feed-subtab-btn" data-feed-type="videos">
+                  Videos
+                </button>
+                <button class="feed-subtab-btn" data-feed-type="duets">
+                  🎬 Duets
+                </button>
+                <button class="feed-subtab-btn" data-feed-type="trending">
+                  📊 Trending
+                </button>
+                <button class="feed-subtab-btn" data-feed-type="viral">
+                  Viral
+                </button>
+              </div>
+              <div class="sort-container">
+                <select id="feedSortBy" class="sort-by-select">
+                  <option value="newest">Newest</option>
+                  <option value="oldest">Oldest</option>
+                  <option value="most-liked">Most Liked</option>
+                  <option value="most-shared">Most Shared</option>
+                </select>
+              </div>
+            </div>
+
+            <!-- Posts Container -->
+            <div id="feedContainer" class="feed-container">
+              <div class="empty-state">
+                <p>📝 No posts yet. Create your first post to get started!</p>
+              </div>
+            </div>
+
+            <!-- Videos Container -->
+            <div
+              id="videosContainer"
+              class="feed-container"
+              style="display: none"
+            >
+              <div class="empty-state">
+                <p>
+                  🎥 No videos yet. Generate your first video to get started!
+                </p>
+              </div>
+            </div>
+
+            <!-- Duets Container -->
+            <div
+              id="duetsContainer"
+              class="feed-container"
+              style="display: none"
+            >
+              <div class="empty-state">
+                <p>🎬 No duets yet. Create your first duet to get started!</p>
+              </div>
+            </div>
+
+            <!-- Trending Hashtags Container -->
+            <div
+              id="trendingHashtagsContainer"
+              class="feed-container"
+              style="display: none"
+            >
+              <div class="empty-state">
+                <p>
+                  📊 No trending hashtags yet. Start using hashtags in your
+                  posts!
+                </p>
+              </div>
+            </div>
+
+            <!-- Viral Container -->
+            <div
+              id="viralContainer"
+              class="feed-container"
+              style="display: none"
+            >
+              <div class="empty-state">
+                <p>🚀 No viral posts yet. Keep creating to go viral!</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Explore Tab -->
+        <div class="tab-content" id="explore-tab">
+          <div class="explore-section">
+            <h2>🔍 Explore</h2>
+            <p class="explore-subtitle">Discover posts from other players</p>
+
+            <!-- Sort Filter -->
+            <div class="explore-sort-filter">
+              <button
+                class="sort-btn active"
+                data-sort="all"
+                onclick="setSortFilter('all')"
+              >
+                <span>📊 All Posts</span>
+              </button>
+              <button
+                class="sort-btn"
+                data-sort="good"
+                onclick="setSortFilter('good')"
+              >
+                <span>✨ Good Posts</span>
+              </button>
+              <button
+                class="sort-btn"
+                data-sort="bad"
+                onclick="setSortFilter('bad')"
+              >
+                <span>⚠️ Bad Posts</span>
+              </button>
+            </div>
+
+            <!-- Fake Player Feed Container -->
+            <div id="fakePlayerFeedContainer" class="feed-container">
+              <div class="empty-state">
+                <p>📝 No posts from other players yet</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Activity Tab -->
+        <div class="tab-content" id="activity-tab">
+          <div class="activity-section">
+            <!-- Activity Sub-tabs -->
+            <div class="activity-subtabs">
+              <button
+                class="activity-subtab-btn active"
+                data-activity-type="all"
+              >
+                All
+              </button>
+              <button class="activity-subtab-btn" data-activity-type="follow">
+                Follows
+              </button>
+              <button class="activity-subtab-btn" data-activity-type="like">
+                Likes
+              </button>
+              <button class="activity-subtab-btn" data-activity-type="comment">
+                Comments
+              </button>
+              <button class="activity-subtab-btn" data-activity-type="share">
+                Shares
+              </button>
+              <button class="activity-subtab-btn" data-activity-type="reply">
+                Replies
+              </button>
+              <button class="activity-subtab-btn" data-activity-type="shoutout">
+                Shoutouts
+              </button>
+              <button class="activity-subtab-btn" data-activity-type="message">
+                Messages
+              </button>
+              <button class="activity-subtab-btn" data-activity-type="autopost">
+                Auto-Post
+              </button>
+              <button class="activity-subtab-btn" data-activity-type="report">
+                🚨 Reports
+              </button>
+            </div>
+
+            <!-- Notifications Header with Clear All Button -->
+            <div class="notifications-header">
+              <h3
+                style="margin: 0; font-size: 14px; color: var(--text-secondary)"
+              >
+                Activity
+              </h3>
+              <button
+                class="clear-all-btn"
+                id="clearAllNotifications"
+                title="Clear all notifications"
+              >
+                🗑️ Clear All
+              </button>
+            </div>
+
+            <!-- Notifications -->
+            <div id="notificationContainer" class="notification-container">
+              <p class="no-activity">🦗 No new activity</p>
+            </div>
+
+            <!-- Auto-Post Settings -->
+            <div id="autopostContainer" style="display: none">
+              <div
+                style="
+                  padding: 20px;
+                  background: var(--surface);
+                  border-radius: 12px;
+                  margin-bottom: 20px;
+                "
+              >
+                <h3 style="margin-bottom: 16px">⚙️ Auto-Post Settings</h3>
+                <div
+                  class="setting-item"
+                  style="
+                    display: flex;
+                    align-items: center;
+                    gap: 12px;
+                    margin-bottom: 16px;
+                  "
+                >
+                  <label style="margin: 0">Auto-Post (Every 5 minutes)</label>
+                  <input type="checkbox" id="autoPostToggle" checked />
+                </div>
+                <p
+                  style="
+                    font-size: 13px;
+                    color: var(--text-secondary);
+                    margin: 0;
+                  "
+                >
+                  Automatically generate and publish posts every 5 minutes while
+                  you're away.
+                </p>
+              </div>
+
+              <!-- Auto-Post Notifications -->
+              <div
+                id="autopostNotificationContainer"
+                class="notification-container"
+              >
+                <p class="no-activity">🦗 No auto-posts yet</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Messages Tab -->
+        <div class="tab-content" id="messages-tab">
+          <div class="messages-section">
+            <h2>Messages</h2>
+            <div class="messages-composer">
+              <input
+                type="text"
+                id="messageReplyInput"
+                class="message-reply-input"
+                placeholder="Reply to followers..."
+                maxlength="140"
+              />
+              <button id="sendMessageBtn" class="send-message-btn">Send</button>
+            </div>
+            <div id="messagesContainer" class="messages-list">
+              <div class="empty-state">
+                <p>
+                  💬 No messages yet. Start gaining followers to receive
+                  messages!
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Statistics Tab -->
+        <div class="tab-content" id="statistics-tab">
+          <div class="statistics-section">
+            <h2>Statistics</h2>
+
+            <!-- Session Stats -->
+            <div class="stats-group">
+              <h3>Session Stats</h3>
+              <div class="session-stats-inline">
+                <div class="session-stat">
+                  <span class="stat-icon">⏱️</span>
+                  <span class="stat-label">Play Time:</span>
+                  <span class="stat-value" id="playTime">0h 0m 0s</span>
+                </div>
+                <div class="session-stat">
+                  <span class="stat-icon">📱</span>
+                  <span class="stat-label">Started:</span>
+                  <span class="stat-value" id="sessionStart">--:--</span>
+                </div>
+                <div class="session-stat">
+                  <span class="stat-icon">👥</span>
+                  <span class="stat-value" id="sessionFollowers">0</span>
+                  <span class="stat-label">Followers</span>
+                </div>
+                <div class="session-stat">
+                  <span class="stat-icon">❤️</span>
+                  <span class="stat-value" id="sessionLikes">0</span>
+                  <span class="stat-label">Likes</span>
+                </div>
+                <div class="session-stat">
+                  <span class="stat-icon">🔄</span>
+                  <span class="stat-value" id="sessionShares">0</span>
+                  <span class="stat-label">Shares</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Content Stats -->
+            <div class="stats-group">
+              <h3>Content Stats</h3>
+              <div class="stats-grid-2">
+                <div class="stat-box">
+                  <div class="stat-box-icon">📝</div>
+                  <div class="stat-box-label">Total Posts</div>
+                  <div class="stat-box-value" id="totalPosts">0</div>
+                </div>
+                <div class="stat-box">
+                  <div class="stat-box-icon">📹</div>
+                  <div class="stat-box-label">Total Videos</div>
+                  <div class="stat-box-value" id="totalVideos">0</div>
+                </div>
+                <div class="stat-box">
+                  <div class="stat-box-icon">🚀</div>
+                  <div class="stat-box-label">Viral Posts</div>
+                  <div class="stat-box-value" id="viralCount">0</div>
+                </div>
+                <div class="stat-box">
+                  <div class="stat-box-icon">💬</div>
+                  <div class="stat-box-label">Total Messages</div>
+                  <div class="stat-box-value" id="totalMessages">0</div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Engagement Stats -->
+            <div class="stats-group">
+              <h3>Engagement Stats</h3>
+              <div class="stats-grid-2">
+                <div class="stat-box">
+                  <div class="stat-box-icon">❤️</div>
+                  <div class="stat-box-label">Total Likes</div>
+                  <div class="stat-box-value" id="statsLikes">0</div>
+                </div>
+                <div class="stat-box">
+                  <div class="stat-box-icon">🔄</div>
+                  <div class="stat-box-label">Total Shares</div>
+                  <div class="stat-box-value" id="statsShares">0</div>
+                </div>
+                <div class="stat-box">
+                  <div class="stat-box-icon">👁️</div>
+                  <div class="stat-box-label">Total Views</div>
+                  <div class="stat-box-value" id="statsViews">0</div>
+                </div>
+                <div class="stat-box">
+                  <div class="stat-box-icon">👥</div>
+                  <div class="stat-box-label">Peak Followers</div>
+                  <div class="stat-box-value" id="peakFollowers">0</div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Milestones -->
+            <div class="stats-group">
+              <h3>Milestones Achieved</h3>
+              <div id="milestonesContainer" class="milestones-list">
+                <p class="no-activity">
+                  🎯 No milestones achieved yet. Keep growing!
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Leaderboards Tab -->
+        <div class="tab-content" id="leaderboards-tab">
+          <div class="leaderboards-section">
+            <h2>🏆 Leaderboards</h2>
+            <p class="section-subtitle">
+              Compete with other players and climb the ranks
+            </p>
+
+            <!-- Leaderboard Type Tabs -->
+            <div class="leaderboard-type-tabs">
+              <button
+                class="leaderboard-type-btn active"
+                data-leaderboard-type="followers"
+              >
+                <span>👥 Followers</span>
+              </button>
+              <button
+                class="leaderboard-type-btn"
+                data-leaderboard-type="likes"
+              >
+                <span>❤️ Likes</span>
+              </button>
+              <button
+                class="leaderboard-type-btn"
+                data-leaderboard-type="views"
+              >
+                <span>👁️ Views</span>
+              </button>
+              <button
+                class="leaderboard-type-btn"
+                data-leaderboard-type="posts"
+              >
+                <span>📝 Posts</span>
+              </button>
+              <button
+                class="leaderboard-type-btn"
+                data-leaderboard-type="viral"
+              >
+                <span>🚀 Viral</span>
+              </button>
+            </div>
+
+            <!-- Leaderboard Container -->
+            <div id="leaderboardContainer" class="leaderboard-container">
+              <div class="leaderboard-list">
+                <!-- Leaderboard entries will be populated here -->
+              </div>
+            </div>
+
+            <!-- Your Rank Section -->
+            <div class="your-rank-section">
+              <h3>Your Rank</h3>
+              <div class="your-rank-card">
+                <div class="rank-position">
+                  <span class="rank-number" id="yourRankNumber">--</span>
+                </div>
+                <div class="rank-info">
+                  <div class="rank-username" id="yourRankUsername">Player</div>
+                  <div class="rank-value" id="yourRankValue">0</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Reports Tab -->
+        <div class="tab-content" id="reports-tab">
+          <div class="reports-section">
+            <h2>📋 Player Reports</h2>
+            <p class="section-subtitle">
+              Manage reports from fake players about other players
+            </p>
+
+            <div class="reports-filters-wrapper">
+              <div class="reports-filters">
+                <button
+                  class="report-filter-btn active"
+                  data-filter="all"
+                  onclick="setReportFilter('all')"
+                >
+                  All Reports
+                </button>
+                <button
+                  class="report-filter-btn"
+                  data-filter="pending"
+                  onclick="setReportFilter('pending')"
+                >
+                  Pending
+                </button>
+                <button
+                  class="report-filter-btn"
+                  data-filter="resolved"
+                  onclick="setReportFilter('resolved')"
+                >
+                  Resolved
+                </button>
+                <div class="filter-slider"></div>
+              </div>
+              <button
+                class="report-meanings-btn"
+                onclick="showReportMeanings()"
+                title="View report reason meanings"
+              >
+                ℹ️ Report Meanings
+              </button>
+            </div>
+
+            <div id="reportsContainer" class="reports-container">
+              <div class="empty-state">
+                <p>📝 No reports yet</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Settings Tab -->
+        <div class="tab-content" id="settings-tab">
+          <div class="settings-section">
+            <h2>Settings</h2>
+
+            <!-- Game Settings -->
+            <div class="settings-group">
+              <h3>Game Settings</h3>
+
+              <div class="setting-item">
+                <label>Auto-Save</label>
+                <input type="checkbox" id="autoSaveToggle" checked />
+              </div>
+
+              <div class="setting-item">
+                <label>Sound Effects</label>
+                <input type="checkbox" id="soundToggle" checked />
+              </div>
+
+              <div class="setting-item">
+                <label>Sound Volume</label>
+                <div style="display: flex; align-items: center; gap: 12px">
+                  <input
+                    type="range"
+                    id="soundVolumeSlider"
+                    min="0"
+                    max="100"
+                    value="50"
+                    style="flex: 1"
+                  />
+                  <span
+                    id="soundVolumeDisplay"
+                    style="min-width: 40px; text-align: right"
+                    >50%</span
+                  >
+                </div>
+              </div>
+
+              <div class="setting-item">
+                <label>Dark Mode</label>
+                <input type="checkbox" id="darkModeToggle" />
+              </div>
+            </div>
+
+            <!-- Theme Settings -->
+            <div class="settings-group">
+              <h3>🎨 Themes</h3>
+              <p class="setting-description">
+                Choose your favorite color theme
+              </p>
+              <div
+                id="userThemesContainer"
+                style="
+                  display: grid;
+                  grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+                  gap: 12px;
+                  margin-top: 12px;
+                "
+              >
+                <!-- Themes will be populated here -->
+              </div>
+            </div>
+
+            <!-- Automation Settings -->
+            <div class="settings-group">
+              <h4>🤖 Automation</h4>
+
+              <div class="setting-item">
+                <label>🤖 Auto-Post</label>
+                <input type="checkbox" id="autoPostToggleSettings" checked />
+              </div>
+              <p class="setting-description">
+                Automatically generate and publish posts every whatever interval
+                you set while you're away
+              </p>
+
+              <div class="setting-item">
+                <label>🤖 AI Report Moderation</label>
+                <input type="checkbox" id="aiModerationToggle" checked />
+              </div>
+              <p class="setting-description">
+                AI automatically reviews and resolves player reports
+              </p>
+
+              <div class="setting-item">
+                <label>🤖 AI Content Moderation</label>
+                <input type="checkbox" id="aiContentModerationToggle" checked />
+              </div>
+              <p class="setting-description">
+                AI automatically flags and removes spam, inappropriate, or
+                misleading content
+              </p>
+            </div>
+
+            <!-- Automation Intervals -->
+            <div class="settings-group">
+              <h3>⚙️ Automation Intervals</h3>
+
+              <div class="auto-post-interval-container">
+                <div class="interval-header">
+                  <label class="interval-label">Auto-Post Interval</label>
+                  <span id="autoPostIntervalDisplay" class="interval-display"
+                    >5 minutes</span
+                  >
+                </div>
+                <div class="slider-wrapper">
+                  <input
+                    type="range"
+                    id="autoPostIntervalSlider"
+                    min="1"
+                    max="20"
+                    value="5"
+                    class="interval-slider"
+                  />
+                </div>
+                <div class="slider-labels">
+                  <span>1 min</span>
+                  <span>20 min</span>
+                </div>
+              </div>
+
+              <div class="content-deletion-container">
+                <div class="interval-header">
+                  <label class="interval-label">Auto-Delete Content</label>
+                  <span id="contentDeletionDisplay" class="interval-display"
+                    >10 minutes</span
+                  >
+                </div>
+                <p class="setting-description">
+                  Posts, videos, and duets will automatically delete after this
+                  time
+                </p>
+                <div class="slider-wrapper">
+                  <input
+                    type="range"
+                    id="contentDeletionSlider"
+                    min="1"
+                    max="30"
+                    value="10"
+                    class="interval-slider"
+                  />
+                </div>
+                <div class="slider-labels">
+                  <span>1 min</span>
+                  <span>30 min</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Data Management -->
+            <div class="settings-group">
+              <h3>Data Management</h3>
+
+              <button id="resetDataBtn" class="settings-btn reset-btn">
+                🔄 Reset All Data
+              </button>
+            </div>
+
+            <!-- About -->
+            <div class="settings-group">
+              <h3>About</h3>
+              <p class="about-text">Simsta v1.0 - An idle social media game</p>
+              <p class="about-text">
+                Build your following and watch your content go viral!
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Boosts Tab -->
+        <div class="tab-content" id="boosts-tab">
+          <div class="boosts-section">
+            <div class="boosts-header">
+              <div class="boosts-copy">
+                <p class="boosts-eyebrow">Owner Tools</p>
+                <h2>Growth Multipliers</h2>
+                <p class="boosts-description">
+                  Apply a global growth multiplier across posts, videos, duets,
+                  live streams, and engagement systems.
+                </p>
+              </div>
+              <div class="boosts-current">
+                <span>Active</span>
+                <strong id="currentMultiplierDisplay">1x</strong>
+              </div>
+            </div>
+
+            <div class="boosts-panel">
+              <h3>Multiplier Presets</h3>
+              <div class="owner-button-grid growth-multiplier-grid">
+                <button
+                  class="owner-action-btn growth-multiplier-btn"
+                  data-multiplier="1"
+                  onclick="setGlobalMultiplier(1)"
+                  style="background: var(--primary)"
+                >
+                  1x (Normal)
+                </button>
+                <button
+                  class="owner-action-btn growth-multiplier-btn"
+                  data-multiplier="2"
+                  onclick="setGlobalMultiplier(2)"
+                  style="background: #27ae60"
+                >
+                  2x Boost
+                </button>
+                <button
+                  class="owner-action-btn growth-multiplier-btn"
+                  data-multiplier="5"
+                  onclick="setGlobalMultiplier(5)"
+                  style="background: #f39c12"
+                >
+                  5x Super
+                </button>
+                <button
+                  class="owner-action-btn growth-multiplier-btn"
+                  data-multiplier="10"
+                  onclick="setGlobalMultiplier(10)"
+                  style="background: #e74c3c"
+                >
+                  10x Ultra
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Owner Tab -->
+        <div class="tab-content" id="owner-tab">
+          <div class="owner-section">
+            <h2>👑 Owner Control Panel</h2>
+
+            <!-- Owner Cosmetics -->
+            <div class="owner-group">
+              <h3>✨ Special Cosmetics</h3>
+
+              <div style="margin-bottom: 20px">
+                <h4>Badges</h4>
+                <div
+                  id="ownerBadgesContainer"
+                  style="
+                    display: grid;
+                    grid-template-columns: repeat(
+                      auto-fill,
+                      minmax(120px, 1fr)
+                    );
+                    gap: 12px;
+                  "
+                >
+                  <!-- Badges will be populated here -->
+                </div>
+              </div>
+
+              <div style="margin-bottom: 20px">
+                <h4>Themes</h4>
+                <div
+                  id="ownerThemesContainer"
+                  style="
+                    display: grid;
+                    grid-template-columns: repeat(
+                      auto-fill,
+                      minmax(120px, 1fr)
+                    );
+                    gap: 12px;
+                  "
+                >
+                  <!-- Themes will be populated here -->
+                </div>
+              </div>
+            </div>
+
+            <!-- Game Announcements -->
+            <div class="owner-group">
+              <h3>📢 Game Announcements</h3>
+              <div style="margin-bottom: 20px">
+                <textarea
+                  id="announcementInput"
+                  placeholder="Enter announcement message..."
+                  style="
+                    width: 100%;
+                    padding: 12px;
+                    border: 1px solid rgba(255, 255, 255, 0.2);
+                    border-radius: 8px;
+                    background: rgba(255, 255, 255, 0.05);
+                    color: inherit;
+                    font-size: 14px;
+                    resize: vertical;
+                    min-height: 80px;
+                    box-sizing: border-box;
+                  "
+                ></textarea>
+                <button
+                  id="sendAnnouncementBtn"
+                  class="btn-save"
+                  style="width: 100%; margin-top: 12px"
+                >
+                  📢 Send Announcement
+                </button>
+              </div>
+              <div
+                id="announcementsListContainer"
+                style="max-height: 300px; overflow-y: auto"
+              >
+                <!-- Announcements will be populated here -->
+              </div>
+            </div>
+
+            <!-- Owner Rewards -->
+            <div class="owner-group">
+              <h3>🎁 Exclusive Rewards</h3>
+              <div
+                id="ownerRewardsContainer"
+                style="
+                  display: grid;
+                  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+                  gap: 12px;
+                "
+              >
+                <!-- Rewards will be populated here -->
+              </div>
+            </div>
+            <!-- Owner Utility Boosts -->
+            <div class="owner-group">
+              <h3>⚡ Instant Boosts</h3>
+
+              <div style="margin-bottom: 20px">
+                <div class="owner-button-grid">
+                  <button class="owner-action-btn" onclick="addInstantBoost('followers', 10000)" style="background: var(--surface); color: var(--text-primary);">+10K Followers</button>
+                  <button class="owner-action-btn" onclick="addInstantBoost('likes', 50000)" style="background: var(--surface); color: var(--text-primary);">+50K Likes</button>
+                  <button class="owner-action-btn" onclick="addInstantBoost('views', 100000)" style="background: var(--surface); color: var(--text-primary);">+100K Views</button>
+                  <button class="owner-action-btn" onclick="gameState.isVerified = true; renderUI(); saveGame(); addNotification('✅ Verification forced!');" style="background: var(--surface); color: var(--text-primary);">Force Verified</button>
+                </div>
+              </div>
+            </div>
+
+            <!-- Danger Zone -->
+            <div class="owner-group danger-zone" style="border-color: #e74c3c;">
+              <h3 style="color: #e74c3c;">⚠️ Danger Zone</h3>
+              <p style="font-size: 13px; color: var(--text-secondary); margin-bottom: 12px;">These actions affect global shared storage.</p>
+              <button class="owner-action-btn danger" onclick="clearGlobalData()" style="background: #e74c3c; width: 100%;">🔥 Clear Global Announcements & Leaderboards</button>
+            </div>
+          </div>
+          
+          <style>
+            .owner-button-grid {
+              display: grid;
+              grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+              gap: 10px;
+              margin-top: 10px;
+            }
+            .owner-action-btn {
+              border: 1px solid var(--border);
+              color: white;
+              padding: 10px;
+              border-radius: 8px;
+              cursor: pointer;
+              font-size: 13px;
+              font-weight: 600;
+              transition: all 0.2s;
+            }
+            .owner-action-btn:hover {
+              transform: translateY(-2px);
+              filter: brightness(1.1);
+            }
+          </style>
+        </div>
+
+      </main>
+    </div>
+
+    <!-- Username Edit Modal -->
+    <div id="usernameModal" class="modal-overlay" style="display: none">
+      <div class="modal-popup" style="max-width: 500px">
+        <h3>Change Username & Profile Picture</h3>
+
+        <div style="margin-bottom: 20px">
+          <label style="display: block; margin-bottom: 8px; font-weight: 500"
+            >Username</label
+          >
+          <input
+            type="text"
+            id="usernameInput"
+            placeholder="Enter username"
+            maxlength="20"
+            style="
+              width: 100%;
+              padding: 10px;
+              border: 1px solid rgba(255, 255, 255, 0.2);
+              border-radius: 8px;
+              background: rgba(255, 255, 255, 0.05);
+              color: inherit;
+              font-size: 14px;
+              box-sizing: border-box;
+            "
+          />
+        </div>
+
+        <div style="margin-bottom: 20px">
+          <label style="display: block; margin-bottom: 12px; font-weight: 500"
+            >Profile Picture</label
+          >
+          <div class="profile-pic-modal-grid">
+            <button
+              class="profile-pic-modal-btn"
+              data-pic="girl1"
+              style="--pic-grad: linear-gradient(135deg, #ffb6c1, #ffc0cb)"
+            >
+              😍
+            </button>
+            <button
+              class="profile-pic-modal-btn"
+              data-pic="girl2"
+              style="--pic-grad: linear-gradient(135deg, #ff69b4, #ffb6c1)"
+            >
+              💕
+            </button>
+            <button
+              class="profile-pic-modal-btn"
+              data-pic="girl3"
+              style="--pic-grad: linear-gradient(135deg, #87ceeb, #b0e0e6)"
+            >
+              ⭐
+            </button>
+            <button
+              class="profile-pic-modal-btn"
+              data-pic="girl4"
+              style="--pic-grad: linear-gradient(135deg, #ffb6d9, #ffc0cb)"
+            >
+              👑
+            </button>
+            <button
+              class="profile-pic-modal-btn"
+              data-pic="girl5"
+              style="--pic-grad: linear-gradient(135deg, #ff1493, #ffb6c1)"
+            >
+              🌸
+            </button>
+            <button
+              class="profile-pic-modal-btn"
+              data-pic="girl6"
+              style="--pic-grad: linear-gradient(135deg, #ffd700, #ffa500)"
+            >
+              🌹
+            </button>
+            <button
+              class="profile-pic-modal-btn"
+              data-pic="girl7"
+              style="--pic-grad: linear-gradient(135deg, #ff69b4, #ff1493)"
+            >
+              💖
+            </button>
+            <button
+              class="profile-pic-modal-btn"
+              data-pic="girl8"
+              style="--pic-grad: linear-gradient(135deg, #ffd700, #ffa500)"
+            >
+              ✨
+            </button>
+            <button
+              class="profile-pic-modal-btn"
+              data-pic="girl9"
+              style="--pic-grad: linear-gradient(135deg, #ffd700, #ffa500)"
+            >
+              💎
+            </button>
+            <button
+              class="profile-pic-modal-btn"
+              data-pic="girl10"
+              style="--pic-grad: linear-gradient(135deg, #ffd700, #ffa500)"
+            >
+              🎀
+            </button>
+            <button
+              class="profile-pic-modal-btn"
+              data-pic="girl11"
+              style="--pic-grad: linear-gradient(135deg, #ffb6d9, #ffc0cb)"
+            >
+              🦋
+            </button>
+            <button
+              class="profile-pic-modal-btn"
+              data-pic="girl12"
+              style="--pic-grad: linear-gradient(135deg, #87ceeb, #b0e0e6)"
+            >
+              🌺
+            </button>
+          </div>
+        </div>
+
+        <div style="margin-bottom: 20px">
+          <label style="display: block; margin-bottom: 12px; font-weight: 500"
+            >🏆 Achievement Badges</label
+          >
+          <div
+            id="modalAchievementBadgesContainer"
+            style="
+              display: grid;
+              grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
+              gap: 8px;
+            "
+          >
+            <!-- Badges will be populated here -->
+          </div>
+        </div>
+
+        <div class="modal-buttons">
+          <button id="saveUsernameBtn" class="btn-save">Save</button>
+          <button id="cancelUsernameBtn" class="btn-cancel">Cancel</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Confirmation Modal -->
+    <div id="confirmationModal" class="modal-overlay" style="display: none">
+      <div class="modal-popup confirmation-modal">
+        <div class="confirmation-header">
+          <div class="confirmation-icon">⚠️</div>
+          <div class="confirmation-content">
+            <h3>Confirm Action</h3>
+            <p id="confirmationMessage"></p>
+          </div>
+        </div>
+        <div
+          class="modal-buttons confirmation-buttons"
+          style="justify-content: center; gap: 12px; margin-top: 24px"
+        >
+          <button id="confirmBtn" class="btn-confirm" style="order: 1">
+            OK
+          </button>
+          <button id="cancelConfirmBtn" class="btn-cancel" style="order: 2">
+            Cancel
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Player Profile Modal -->
+    <div id="playerProfileModal" class="modal-overlay" style="display: none">
+      <div class="modal-popup" style="max-width: 500px">
+        <button
+          id="closeProfileBtn"
+          style="
+            position: absolute;
+            top: 16px;
+            right: 16px;
+            background: none;
+            border: none;
+            font-size: 24px;
+            cursor: pointer;
+          "
+        >
+          ✕
+        </button>
+
+        <div style="text-align: center; margin-bottom: 24px">
+          <div style="font-size: 64px; margin-bottom: 12px" id="profileAvatar">
+            😊
+          </div>
+          <h2 id="profileUsername" style="margin: 0 0 4px 0">Player Name</h2>
+          <p id="profileHandle" style="margin: 0; color: #999; font-size: 14px">
+            @handle
+          </p>
+          <div id="profileVerified" style="display: none; margin-top: 8px">
+            <span
+              style="
+                background: #1da1f2;
+                color: white;
+                padding: 4px 8px;
+                border-radius: 12px;
+                font-size: 12px;
+              "
+              >✓ Verified</span
+            >
+          </div>
+        </div>
+
+        <div
+          style="
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 12px;
+            margin-bottom: 24px;
+            text-align: center;
+          "
+        >
+          <div class="player-profile-stat-box">
+            <div class="player-profile-stat-value" id="profileFollowers">0</div>
+            <div class="player-profile-stat-label">Followers</div>
+          </div>
+          <div class="player-profile-stat-box">
+            <div class="player-profile-stat-value" id="profileTotalLikes">
+              0
+            </div>
+            <div class="player-profile-stat-label">Total Likes</div>
+          </div>
+          <div class="player-profile-stat-box">
+            <div class="player-profile-stat-value" id="profileTotalViews">
+              0
+            </div>
+            <div class="player-profile-stat-label">Total Views</div>
+          </div>
+        </div>
+
+        <div
+          style="
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin-bottom: 24px;
+            text-align: center;
+          "
+        >
+          <div class="player-profile-stat-box">
+            <div class="player-profile-stat-value" id="profilePosts">0</div>
+            <div class="player-profile-stat-label">Posts</div>
+          </div>
+          <div class="player-profile-stat-box">
+            <div class="player-profile-stat-value" id="profileShares">0</div>
+            <div class="player-profile-stat-label">Total Shares</div>
+          </div>
+        </div>
+
+        <div style="text-align: center">
+          <button
+            id="closeProfileBtnBottom"
+            class="btn-cancel"
+            style="width: 100%"
+          >
+            Close
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Engagement Details Modal -->
+    <div id="engagementModal" class="modal-overlay" style="display: none">
+      <div class="modal-popup" style="max-width: 400px">
+        <button
+          id="closeEngagementModal"
+          style="
+            position: absolute;
+            top: 16px;
+            right: 16px;
+            background: none;
+            border: none;
+            font-size: 24px;
+            cursor: pointer;
+          "
+        >
+          ✕
+        </button>
+        <h3 id="engagementModalTitle" style="margin-top: 0; text-align: center">
+          Engagement
+        </h3>
+        <div
+          id="engagementModalContent"
+          style="max-height: 400px; overflow-y: auto"
+        >
+          <!-- Engagement details will be populated here -->
+        </div>
+      </div>
+    </div>
+
+    <!-- Story Modal -->
+    <div id="storyModal" class="modal-overlay" style="display: none">
+      <div class="modal-popup" style="max-width: 500px">
+        <button
+          id="closeStoryBtn"
+          style="
+            position: absolute;
+            top: 16px;
+            right: 16px;
+            background: none;
+            border: none;
+            font-size: 24px;
+            cursor: pointer;
+          "
+        >
+          ✕
+        </button>
+
+        <h3 style="margin-top: 0; text-align: center">📖 Stories</h3>
+
+        <!-- Stories List View -->
+        <div id="storiesListContainer" style="display: none">
+          <div
+            id="storiesList"
+            style="max-height: 400px; overflow-y: auto; margin-bottom: 12px"
+          >
+            <!-- Stories will be populated here -->
+          </div>
+          <button
+            id="createNewStoryBtn"
+            class="btn-save"
+            style="width: 100%; display: none"
+          >
+            📝 Create New Story
+          </button>
+        </div>
+
+        <!-- Story Views Container -->
+        <div
+          id="storyViewsContainer"
+          style="display: none; margin-bottom: 20px"
+        >
+          <h4 style="margin: 0 0 12px 0">Story Views</h4>
+          <div
+            id="storyViewsList"
+            style="
+              max-height: 300px;
+              overflow-y: auto;
+              background: rgba(255, 255, 255, 0.05);
+              padding: 12px;
+              border-radius: 8px;
+            "
+          >
+            <!-- Views will be populated here -->
+          </div>
+          <button
+            id="backToStoriesBtn"
+            class="btn-cancel"
+            style="width: 100%; margin-top: 12px; display: none"
+          >
+            ← Back to Stories
+          </button>
+        </div>
+
+        <!-- Story Creation Container -->
+        <div id="storyCreationContainer" style="display: none">
+          <button
+            id="postStoryBtn"
+            class="btn-save"
+            style="width: 100%; margin-bottom: 8px"
+          >
+            ✨ Generate Story
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Changelog History Modal -->
+    <div id="changelogHistoryModal" class="modal" style="display: none">
+      <div class="modal-content changelog-history-modal">
+        <div class="modal-header">
+          <h2>📜 Update History</h2>
+          <button class="modal-close" onclick="closeChangelogHistory()">
+            ✕
+          </button>
+        </div>
+        <div id="changelogHistoryContainer" class="changelog-history-container">
+          <!-- Populated by JavaScript -->
+        </div>
+      </div>
+    </div>
+
+    <!-- Report Meanings Modal -->
+    <div id="reportMeaningsModal" class="modal-overlay" style="display: none">
+      <div class="modal-popup" style="max-width: 500px">
+        <button
+          id="closeReportMeaningsBtn"
+          style="
+            position: absolute;
+            top: 16px;
+            right: 16px;
+            background: none;
+            border: none;
+            font-size: 24px;
+            cursor: pointer;
+          "
+        >
+          ✕
+        </button>
+        <h3 style="margin-top: 0">📖 Report Reason Meanings</h3>
+        <div
+          id="reportMeaningsContent"
+          style="max-height: 400px; overflow-y: auto"
+        >
+          <!-- Report meanings will be populated here -->
+        </div>
+      </div>
+    </div>
+
+    <!-- Add User Modal -->
+    <div id="addUserModal" class="modal-overlay" style="display: none">
+      <div class="modal-popup" style="max-width: 500px">
+        <h3>➕ Create New User Profile</h3>
+
+        <div style="margin-bottom: 20px">
+          <label style="display: block; margin-bottom: 8px; font-weight: 500"
+            >Username</label
+          >
+          <input
+            type="text"
+            id="newUserUsername"
+            placeholder="Enter username"
+            maxlength="20"
+            style="
+              width: 100%;
+              padding: 10px;
+              border: 1px solid rgba(255, 255, 255, 0.2);
+              border-radius: 8px;
+              background: rgba(255, 255, 255, 0.05);
+              color: inherit;
+              font-size: 14px;
+              box-sizing: border-box;
+            "
+          />
+        </div>
+
+        <div style="margin-bottom: 20px">
+          <label style="display: block; margin-bottom: 12px; font-weight: 500"
+            >Profile Picture</label
+          >
+          <div
+            style="
+              display: grid;
+              grid-template-columns: repeat(6, 1fr);
+              gap: 8px;
+            "
+          >
+            <button
+              class="new-user-pic-btn"
+              data-pic="girl1"
+              style="
+                background: linear-gradient(135deg, #ffb6c1, #ffc0cb);
+                border-radius: 50%;
+                width: 50px;
+                height: 50px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                border: 2px solid rgba(255, 255, 255, 0.3);
+                cursor: pointer;
+                font-size: 24px;
+              "
+            >
+              😍
+            </button>
+            <button
+              class="new-user-pic-btn"
+              data-pic="girl2"
+              style="
+                background: linear-gradient(135deg, #ff69b4, #ffb6c1);
+                border-radius: 50%;
+                width: 50px;
+                height: 50px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                border: 2px solid rgba(255, 255, 255, 0.3);
+                cursor: pointer;
+                font-size: 24px;
+              "
+            >
+              💕
+            </button>
+            <button
+              class="new-user-pic-btn"
+              data-pic="girl3"
+              style="
+                background: linear-gradient(135deg, #87ceeb, #b0e0e6);
+                border-radius: 50%;
+                width: 50px;
+                height: 50px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                border: 2px solid rgba(255, 255, 255, 0.3);
+                cursor: pointer;
+                font-size: 24px;
+              "
+            >
+              ⭐
+            </button>
+            <button
+              class="new-user-pic-btn"
+              data-pic="girl4"
+              style="
+                background: linear-gradient(135deg, #ffb6d9, #ffc0cb);
+                border-radius: 50%;
+                width: 50px;
+                height: 50px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                border: 2px solid rgba(255, 255, 255, 0.3);
+                cursor: pointer;
+                font-size: 24px;
+              "
+            >
+              👑
+            </button>
+            <button
+              class="new-user-pic-btn"
+              data-pic="girl5"
+              style="
+                background: linear-gradient(135deg, #ff1493, #ffb6c1);
+                border-radius: 50%;
+                width: 50px;
+                height: 50px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                border: 2px solid rgba(255, 255, 255, 0.3);
+                cursor: pointer;
+                font-size: 24px;
+              "
+            >
+              🌸
+            </button>
+            <button
+              class="new-user-pic-btn"
+              data-pic="girl6"
+              style="
+                background: linear-gradient(135deg, #ffd700, #ffa500);
+                border-radius: 50%;
+                width: 50px;
+                height: 50px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                border: 2px solid rgba(255, 255, 255, 0.3);
+                cursor: pointer;
+                font-size: 24px;
+              "
+            >
+              🌹
+            </button>
+            <button
+              class="new-user-pic-btn"
+              data-pic="girl7"
+              style="
+                background: linear-gradient(135deg, #ff69b4, #ff1493);
+                border-radius: 50%;
+                width: 50px;
+                height: 50px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                border: 2px solid rgba(255, 255, 255, 0.3);
+                cursor: pointer;
+                font-size: 24px;
+              "
+            >
+              💖
+            </button>
+            <button
+              class="new-user-pic-btn"
+              data-pic="girl8"
+              style="
+                background: linear-gradient(135deg, #ffd700, #ffa500);
+                border-radius: 50%;
+                width: 50px;
+                height: 50px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                border: 2px solid rgba(255, 255, 255, 0.3);
+                cursor: pointer;
+                font-size: 24px;
+              "
+            >
+              ✨
+            </button>
+            <button
+              class="new-user-pic-btn"
+              data-pic="girl9"
+              style="
+                background: linear-gradient(135deg, #ffd700, #ffa500);
+                border-radius: 50%;
+                width: 50px;
+                height: 50px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                border: 2px solid rgba(255, 255, 255, 0.3);
+                cursor: pointer;
+                font-size: 24px;
+              "
+            >
+              💎
+            </button>
+            <button
+              class="new-user-pic-btn"
+              data-pic="girl10"
+              style="
+                background: linear-gradient(135deg, #ffd700, #ffa500);
+                border-radius: 50%;
+                width: 50px;
+                height: 50px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                border: 2px solid rgba(255, 255, 255, 0.3);
+                cursor: pointer;
+                font-size: 24px;
+              "
+            >
+              🎀
+            </button>
+            <button
+              class="new-user-pic-btn"
+              data-pic="girl11"
+              style="
+                background: linear-gradient(135deg, #ffb6d9, #ffc0cb);
+                border-radius: 50%;
+                width: 50px;
+                height: 50px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                border: 2px solid rgba(255, 255, 255, 0.3);
+                cursor: pointer;
+                font-size: 24px;
+              "
+            >
+              🦋
+            </button>
+            <button
+              class="new-user-pic-btn"
+              data-pic="girl12"
+              style="
+                background: linear-gradient(135deg, #87ceeb, #b0e0e6);
+                border-radius: 50%;
+                width: 50px;
+                height: 50px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                border: 2px solid rgba(255, 255, 255, 0.3);
+                cursor: pointer;
+                font-size: 24px;
+              "
+            >
+              🌺
+            </button>
+          </div>
+        </div>
+
+        <div class="modal-buttons">
+          <button id="createUserBtn" class="btn-save">Create User</button>
+          <button id="cancelAddUserBtn" class="btn-cancel">Cancel</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- How to Play Modal -->
+    <div id="howToPlayModal" class="modal-overlay" style="display: none">
+      <div class="modal-popup" style="max-width: 600px">
+        <button
+          id="closeHowToPlayBtn"
+          style="
+            position: absolute;
+            top: 16px;
+            right: 16px;
+            background: none;
+            border: none;
+            font-size: 24px;
+            cursor: pointer;
+          "
+        >
+          ✕
+        </button>
+        <h3 style="margin-top: 0">🎮 How to Play</h3>
+        <div id="howToPlayContent" style="max-height: 500px; overflow-y: auto">
+          <!-- How to play content will be populated here -->
+        </div>
+      </div>
+    </div>
+
+    <!-- Context Menu -->
+    <div id="contextMenu" class="context-menu" style="display: none">
+      <button class="context-menu-item" data-action="delete">
+        <span>🗑️</span>
+        <span>Delete</span>
+      </button>
+    </div>
+
+    <!-- Live Chat Modal -->
+    <div id="liveChatModal" class="live-chat-modal">
+      <div class="live-chat-modal-content">
+        <div class="live-chat-modal-header">
+          <h2>💬 Live Chat</h2>
+          <button id="closeChatModalBtn" class="close-chat-modal-btn">✕</button>
+        </div>
+        <div id="liveChatModalContainer" class="live-chat-modal-messages">
+          <p class="chat-message system">
+            Stream started! Welcome to the live!
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Legacy scripts are loaded through a single bootstrap. -->
+    <script src="scripts/core/bootstrap.js"></script>
+  </body>
+</html>

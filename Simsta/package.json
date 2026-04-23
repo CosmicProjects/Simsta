@@ -1,0 +1,13 @@
+{
+  "name": "simsta",
+  "version": "1.0.0",
+  "description": "Simsta - Social Media Simulation Game with Player Data Tracking",
+  "main": "update-player-data.js",
+  "scripts": {
+    "sync-data": "node update-player-data.js"
+  },
+  "keywords": ["simsta", "social", "media", "game"],
+  "author": "",
+  "license": "MIT"
+}
+
