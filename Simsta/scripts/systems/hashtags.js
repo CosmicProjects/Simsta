@@ -188,15 +188,15 @@ function filterPostsByHashtag(hashtag) {
 
 function getHashtagBonus(hashtags) {
     const trending = getTrendingHashtags();
-    const trendingTags = trending.map(item => item.tag);
+    const trendingTags = new Set(trending.map(item => item.tag));
 
     let bonus = 1;
     hashtags.forEach(tag => {
-        if (trendingTags.includes(tag)) {
-            bonus *= 1.5; // 50% engagement boost per trending hashtag
+        if (trendingTags.has(tag)) {
+            bonus *= 1.2; // Smaller boost so trending helps without dominating
         }
     });
 
-    return bonus;
+    return Math.min(bonus, 1.6);
 }
 

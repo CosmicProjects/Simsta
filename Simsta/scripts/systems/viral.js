@@ -1,6 +1,10 @@
 // Viral Post Functions
 
 function triggerViral(item) {
+    if (Object.keys(gameState.viralPosts).length >= VIRAL_CONFIG.maxViralPosts) {
+        return;
+    }
+
     if (gameState.viralPosts[item.id]) {
         return;
     }
@@ -57,29 +61,35 @@ function triggerViral(item) {
     }, VIRAL_CONFIG.durationMs);
 }
 
+function pruneExpiredViralPosts(now, allContent) {
+    allContent.forEach(item => {
+        if (gameState.viralPosts[item.id] && now > gameState.viralPosts[item.id]) {
+            delete gameState.viralPosts[item.id];
+        }
+    });
+}
+
+function trimViralPostsToLimit() {
+    const viralItems = Object.entries(gameState.viralPosts);
+    if (viralItems.length <= VIRAL_CONFIG.maxViralPosts) {
+        return;
+    }
+
+    viralItems
+        .sort((a, b) => a[1] - b[1])
+        .slice(0, viralItems.length - VIRAL_CONFIG.maxViralPosts)
+        .forEach(([itemId]) => {
+            delete gameState.viralPosts[itemId];
+        });
+}
+
 function checkAndApplyViralEffects() {
     const now = Date.now();
-
-    gameState.posts.forEach(post => {
-        if (gameState.viralPosts[post.id] && now > gameState.viralPosts[post.id]) {
-            delete gameState.viralPosts[post.id];
-        }
-    });
-
-    gameState.videos.forEach(video => {
-        if (gameState.viralPosts[video.id] && now > gameState.viralPosts[video.id]) {
-            delete gameState.viralPosts[video.id];
-        }
-    });
-
-    gameState.duets.forEach(duet => {
-        if (gameState.viralPosts[duet.id] && now > gameState.viralPosts[duet.id]) {
-            delete gameState.viralPosts[duet.id];
-        }
-    });
-
-    const currentViralCount = Object.keys(gameState.viralPosts).length;
     const allContent = [...gameState.posts, ...gameState.videos, ...gameState.duets];
+
+    pruneExpiredViralPosts(now, allContent);
+
+    let currentViralCount = Object.keys(gameState.viralPosts).length;
     const nonViralContent = allContent.filter(item => !gameState.viralPosts[item.id]);
     const totalContent = allContent.length;
 
@@ -90,38 +100,37 @@ function checkAndApplyViralEffects() {
             const item = nonViralContent[randomIndex];
             triggerViral(item);
             nonViralContent.splice(randomIndex, 1);
+            currentViralCount = Object.keys(gameState.viralPosts).length;
         }
     }
 
-    if (currentViralCount > VIRAL_CONFIG.maxViralPosts) {
-        const viralItems = Object.entries(gameState.viralPosts)
-            .sort((a, b) => a[1] - b[1])
-            .slice(0, currentViralCount - VIRAL_CONFIG.maxViralPosts);
-
-        viralItems.forEach(([itemId]) => {
-            delete gameState.viralPosts[itemId];
-        });
-    }
+    trimViralPostsToLimit();
+    currentViralCount = Object.keys(gameState.viralPosts).length;
 
     if (currentViralCount < VIRAL_CONFIG.maxViralPosts) {
         gameState.posts.forEach(post => {
+            if (Object.keys(gameState.viralPosts).length >= VIRAL_CONFIG.maxViralPosts) return;
             if (!gameState.viralPosts[post.id] && Math.random() < VIRAL_CONFIG.chancePerPost) {
                 triggerViral(post);
             }
         });
 
         gameState.videos.forEach(video => {
+            if (Object.keys(gameState.viralPosts).length >= VIRAL_CONFIG.maxViralPosts) return;
             if (!gameState.viralPosts[video.id] && Math.random() < VIRAL_CONFIG.chancePerPost) {
                 triggerViral(video);
             }
         });
 
         gameState.duets.forEach(duet => {
+            if (Object.keys(gameState.viralPosts).length >= VIRAL_CONFIG.maxViralPosts) return;
             if (!gameState.viralPosts[duet.id] && Math.random() < VIRAL_CONFIG.chancePerPost) {
                 triggerViral(duet);
             }
         });
     }
+
+    trimViralPostsToLimit();
 }
 
 function renderViral() {

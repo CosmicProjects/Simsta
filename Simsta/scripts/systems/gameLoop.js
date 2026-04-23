@@ -359,10 +359,6 @@ function updateGameState() {
                     post.lastCommentNotification = post.comments;
                 }
 
-                // Update trending hashtags
-                if (hashtags.length > 0) {
-                    updateTrendingHashtags(hashtags);
-                }
             }
 
             return true; // Keep this post
@@ -449,10 +445,6 @@ function updateGameState() {
                     video.lastCommentNotification = video.comments;
                 }
 
-                // Update trending hashtags
-                if (hashtags.length > 0) {
-                    updateTrendingHashtags(hashtags);
-                }
             }
 
             return true; // Keep this video
@@ -542,10 +534,6 @@ function updateGameState() {
                     duet.lastCommentNotification = duet.comments;
                 }
 
-                // Update trending hashtags
-                if (hashtags.length > 0) {
-                    updateTrendingHashtags(hashtags);
-                }
             }
 
             return true; // Keep this duet

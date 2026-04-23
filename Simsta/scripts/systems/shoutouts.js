@@ -1,6 +1,6 @@
 // Profile Shoutout System
 
-const PROFILE_SHOUTOUT_BASE_GAIN = 5000;
+const PROFILE_SHOUTOUT_BASE_GAIN = 1500;
 const PROFILE_SHOUTOUT_COOLDOWN_MS = 10 * 60 * 1000;
 const PROFILE_SHOUTOUT_DRIP_PER_SECOND = 100;
 
@@ -20,8 +20,8 @@ function formatCooldownTime(ms) {
 
 function calculateProfileShoutoutGain(sourceFollowers) {
     const source = Math.max(0, Math.floor(sourceFollowers || 0));
-    const influenceGain = Math.floor(source * (0.2 + Math.random() * 0.2)); // 20% - 40%
-    const bonusGain = 2000 + Math.floor(Math.random() * 3000); // 2K - 5K
+    const influenceGain = Math.floor(source * (0.08 + Math.random() * 0.08)); // 8% - 16%
+    const bonusGain = 500 + Math.floor(Math.random() * 1000); // 500 - 1.5K
     return Math.max(PROFILE_SHOUTOUT_BASE_GAIN, influenceGain + bonusGain);
 }
 
